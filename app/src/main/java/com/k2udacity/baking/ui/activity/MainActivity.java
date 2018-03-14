@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -99,8 +100,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(Recipe recipe) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(getString(R.string.intent_recipe), recipe);
+        Log.d(LOG_TAG, "Inside onClick()");
+        Intent intent = new Intent(this, RecipeDetailsActivity.class);
+        intent.putExtra(getString(R.string.recipe_intent_key), recipe);
         startActivity(intent);
     }
 
