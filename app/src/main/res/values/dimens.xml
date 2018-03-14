@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_text">8dp</dimen>
+    <dimen name="elevation_card">2dp</dimen>
+    <dimen name="height_iv_recipe_item">200dp</dimen>
+
+</resources>

@@ -7,22 +7,32 @@
     tools:context="com.k2udacity.baking.ui.activity.MainActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_recipes"
+        android:id="@+id/recyclerview_recipes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp" />
 
     <TextView
-        android:id="@+id/empty_view"
+        android:id="@+id/textview_no_internet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_margin="40dp"
         android:visibility="gone" />
 
+    <Button
+        android:id="@+id/button_refresh"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/textview_no_internet"
+        android:layout_margin="40dp"
+        android:text="@string/refresh"
+        android:visibility="gone" />
+
     <ProgressBar
-        android:id="@+id/loading_indicator"
+        android:id="@+id/progressbar_recipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />

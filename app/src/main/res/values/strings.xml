@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AndroidBakingApp</string>
+    <string name="intent_recipe">intent_recipe</string>
+    <string name="refresh">refresh</string>
+    <string name="no_internet_message">No connection available. Please provide connection and hit refresh.</string>
+    <string name="iv_content_description">Recipe</string>
 </resources>
