@@ -3,10 +3,7 @@ package com.k2udacity.baking.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class Recipe implements Parcelable {
@@ -17,109 +14,25 @@ public class Recipe implements Parcelable {
     private String servings;
     private String image;
 
-    public Recipe(List<Ingredient> ingredients, String id, String servings, String name, String image, List<Step> steps) {
-        this.ingredients = ingredients;
+    public Recipe(String id, String name, List<Ingredient> ingredients, List<Step> steps, String servings, String image) {
         this.id = id;
-        this.servings = servings;
         this.name = name;
-        this.image = image;
+        this.ingredients = ingredients;
         this.steps = steps;
-    }
-
-    public static final List<Recipe> RECIPE_ITEMS = new ArrayList<Recipe>();
-    public static final Map<String, Recipe> RECIPE_MAP = new HashMap<String, Recipe>();
-
-    public static void addItem(Recipe item) {
-        RECIPE_ITEMS.add(item);
-        RECIPE_MAP.put(item.id, item);
-    }
-
-    public Recipe(String id) {
-        this.id = id;
-    }
-
-
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getServings() {
-        return servings;
-    }
-
-    public void setServings(String servings) {
         this.servings = servings;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
         this.image = image;
     }
 
-    public List<Step> getSteps() {
-        return steps;
-    }
-
-
-    public void setSteps(List<Step> steps) {
-        this.steps = steps;
-    }
-
-    @Override
-    public String toString() {
-        return "[ingredients = " + ingredients + ", id = " + id + ", servings = " + servings + ", name = " + name + ", image = " + image + ", steps = " + steps + "]";
-    }
-
-    public Recipe(Parcel in) {
+    private Recipe(Parcel in) {
         id = in.readString();
-        servings = in.readString();
         name = in.readString();
+        ingredients = in.createTypedArrayList(Ingredient.CREATOR);
+        steps = in.createTypedArrayList(Step.CREATOR);
+        servings = in.readString();
         image = in.readString();
-        ingredients = new ArrayList<Ingredient>();
-        steps = new ArrayList<Step>();
-        in.readTypedList(ingredients, Ingredient.CREATOR);
-        in.readTypedList(steps, Step.CREATOR);
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(servings);
-        dest.writeString(name);
-        dest.writeString(image);
-        dest.writeTypedList(ingredients);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
         @Override
         public Recipe createFromParcel(Parcel in) {
             return new Recipe(in);
@@ -130,4 +43,72 @@ public class Recipe implements Parcelable {
             return new Recipe[size];
         }
     };
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public List<Step> getSteps() {
+        return steps;
+    }
+
+    public String getServings() {
+        return servings;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Recipe)) return false;
+
+        Recipe recipe = (Recipe) o;
+
+        if (!getId().equals(recipe.getId())) return false;
+        if (!getName().equals(recipe.getName())) return false;
+        if (getIngredients() != null ? !getIngredients().equals(recipe.getIngredients()) : recipe.getIngredients() != null)
+            return false;
+        if (getSteps() != null ? !getSteps().equals(recipe.getSteps()) : recipe.getSteps() != null)
+            return false;
+        if (getServings() != null ? !getServings().equals(recipe.getServings()) : recipe.getServings() != null)
+            return false;
+        return getImage() != null ? getImage().equals(recipe.getImage()) : recipe.getImage() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + (getIngredients() != null ? getIngredients().hashCode() : 0);
+        result = 31 * result + (getSteps() != null ? getSteps().hashCode() : 0);
+        result = 31 * result + (getServings() != null ? getServings().hashCode() : 0);
+        result = 31 * result + (getImage() != null ? getImage().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeTypedList(ingredients);
+        parcel.writeTypedList(steps);
+        parcel.writeString(servings);
+        parcel.writeString(image);
+    }
 }

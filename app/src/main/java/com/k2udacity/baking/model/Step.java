@@ -10,6 +10,22 @@ public class Step implements Parcelable {
     private String videoURL;
     private String thumbnailURL;
 
+    public Step(Parcel in) {
+        id = in.readString();
+        shortDescription = in.readString();
+        description = in.readString();
+        videoURL = in.readString();
+        thumbnailURL = in.readString();
+    }
+
+    public Step(String id, String shortDescription, String description, String videoURL, String thumbnailURL) {
+        this.id = id;
+        this.shortDescription = shortDescription;
+        this.description = description;
+        this.videoURL = videoURL;
+        this.thumbnailURL = thumbnailURL;
+    }
+
     public String getId() {
         return id;
     }
@@ -55,13 +71,6 @@ public class Step implements Parcelable {
         return "[id = " + id + ", shortDescription = " + shortDescription + ", description = " + description + ", videoURL = " + videoURL + ", thumbnailURL = " + thumbnailURL + "]";
     }
 
-    public Step(Parcel in) {
-        id = in.readString();
-        shortDescription = in.readString();
-        description = in.readString();
-        videoURL = in.readString();
-        thumbnailURL = in.readString();
-    }
 
     @Override
     public int describeContents() {
@@ -75,6 +84,33 @@ public class Step implements Parcelable {
         dest.writeString(description);
         dest.writeString(videoURL);
         dest.writeString(thumbnailURL);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Step)) return false;
+
+        Step step = (Step) o;
+
+        if (!getId().equals(step.getId())) return false;
+        if (getShortDescription() != null ? !getShortDescription().equals(step.getShortDescription()) : step.getShortDescription() != null)
+            return false;
+        if (getDescription() != null ? !getDescription().equals(step.getDescription()) : step.getDescription() != null)
+            return false;
+        if (getVideoURL() != null ? !getVideoURL().equals(step.getVideoURL()) : step.getVideoURL() != null)
+            return false;
+        return getThumbnailURL() != null ? getThumbnailURL().equals(step.getThumbnailURL()) : step.getThumbnailURL() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + (getShortDescription() != null ? getShortDescription().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (getVideoURL() != null ? getVideoURL().hashCode() : 0);
+        result = 31 * result + (getThumbnailURL() != null ? getThumbnailURL().hashCode() : 0);
+        return result;
     }
 
     @SuppressWarnings("unused")

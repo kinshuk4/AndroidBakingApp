@@ -1,9 +1,7 @@
 package com.k2udacity.baking.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,7 @@ import android.widget.TextView;
 
 import com.k2udacity.baking.R;
 import com.k2udacity.baking.model.Recipe;
-import com.squareup.picasso.Picasso;
+import com.k2udacity.baking.utils.ImageUtils;
 
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @Override
     public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(
-                R.layout.layout_recipe,
+                R.layout.layout_recipe_item,
                 parent,
                 false
         );
@@ -50,13 +48,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         holder.textViewRecipeName.setText(recipe.getName());
         holder.textViewServes.setText(recipe.getServings());
 
-        if (!TextUtils.isEmpty(recipe.getImage())) {
-            Uri uri = Uri.parse(recipe.getImage());
-            Picasso.with(context).load(uri).into(holder.imageViewRecipeItem);
-        } else {
-            int drawableId = R.drawable.default_recipe;
-            Picasso.with(context).load(drawableId).into(holder.imageViewRecipeItem);
-        }
+        ImageUtils.setImage(context, recipe.getImage(), holder.imageViewRecipeItem,  R.drawable.default_recipe);
     }
 
     @Override

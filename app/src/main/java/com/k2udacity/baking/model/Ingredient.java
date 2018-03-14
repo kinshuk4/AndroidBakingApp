@@ -11,6 +11,12 @@ public class Ingredient implements Parcelable {
 
     private String quantity;
 
+    public Ingredient(String measure, String ingredient, String quantity) {
+        this.measure = measure;
+        this.ingredient = ingredient;
+        this.quantity = quantity;
+    }
+
     public Ingredient(Parcel in) {
         measure = in.readString();
         ingredient = in.readString();
@@ -51,6 +57,28 @@ public class Ingredient implements Parcelable {
 
     public void setQuantity(String quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Ingredient)) return false;
+
+        Ingredient that = (Ingredient) o;
+
+        if (getMeasure() != null ? !getMeasure().equals(that.getMeasure()) : that.getMeasure() != null)
+            return false;
+        if (getIngredient() != null ? !getIngredient().equals(that.getIngredient()) : that.getIngredient() != null)
+            return false;
+        return getQuantity() != null ? getQuantity().equals(that.getQuantity()) : that.getQuantity() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getMeasure() != null ? getMeasure().hashCode() : 0;
+        result = 31 * result + (getIngredient() != null ? getIngredient().hashCode() : 0);
+        result = 31 * result + (getQuantity() != null ? getQuantity().hashCode() : 0);
+        return result;
     }
 
     @SuppressWarnings("unused")
