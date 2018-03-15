@@ -26,5 +26,7 @@
     <string name="unable_to_fetch_current_step">Unable to fetch current step</string>
     <string name="recipe_preferences">recipe_preferences</string>
     <string name="recipe_cannot_be_displayed">No Recipe Available</string>
+    <string name="position_millis_key">position_millis_key</string>
+    <string name="play_when_ready_key">play_when_ready_key</string>
 
 </resources>

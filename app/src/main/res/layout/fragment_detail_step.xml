@@ -10,12 +10,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.devbrackets.android.exomedia.ui.widget.VideoView
-            android:id="@+id/videoview_step"
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:id="@+id/simpleexoplayerview"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="3"
-            app:useDefaultControls="true" />
+            />
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/nestedscrollview_step"

@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,12 +25,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.devbrackets.android.exomedia.listener.OnPreparedListener;
-import com.devbrackets.android.exomedia.ui.widget.VideoView;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.k2udacity.baking.R;
 import com.k2udacity.baking.model.Step;
@@ -41,14 +53,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class StepDetailsFragment extends Fragment implements OnPreparedListener {
+public class StepDetailsFragment extends Fragment implements ExoPlayer.EventListener {
 
     private static final String LOG_TAG = StepDetailsFragment.class.getSimpleName();
     @BindView(R.id.nestedscrollview_step)
     NestedScrollView nestedScrollViewStep;
     //
-    @BindView(R.id.videoview_step)
-    VideoView videoViewStep;
+    @BindView(R.id.simpleexoplayerview)
+    SimpleExoPlayerView simpleExoPlayerView;
     //
     @BindView(R.id.imageview_step)
     ImageView imageViewStep;
@@ -57,13 +69,19 @@ public class StepDetailsFragment extends Fragment implements OnPreparedListener 
     TextView textViewStepDescription;
     //
     @BindView(R.id.button_prev)
-    Button buttonPreviousStep;
+    Button buttonPrev;
 
     @BindView(R.id.button_next)
-    Button buttonNextStep;
+    Button buttonNext;
 
+    private static MediaSessionCompat mediaSession;
+    private PlaybackStateCompat.Builder stateBuilder;
+
+    private SimpleExoPlayer exoPlayer;
     private StepDetailsOnClickListener listener;
     private String videoUrl;
+    private long positionMillis = 0;
+    private boolean playWhenReady = true;
 
     public StepDetailsFragment() {
 
@@ -107,8 +125,8 @@ public class StepDetailsFragment extends Fragment implements OnPreparedListener 
             }
 
             textViewStepDescription.setText(currentStep.getDescription());
-            setUpPrevAndNextButton(buttonPreviousStep, steps.size(), position, -1);
-            setUpPrevAndNextButton(buttonNextStep, steps.size(), position, 1);
+            setUpPrevAndNextButton(buttonPrev, steps.size(), position, -1);
+            setUpPrevAndNextButton(buttonNext, steps.size(), position, 1);
 
             AppCompatActivity activity = ((AppCompatActivity) getActivity());
             ActionBar actionBar = null;
@@ -118,7 +136,7 @@ public class StepDetailsFragment extends Fragment implements OnPreparedListener 
 
             videoUrl = currentStep.getVideoURL();
             if (!TextUtils.isEmpty(videoUrl) && NetworkUtils.isInternetAvailable(context)) {
-                initializePlayer(Uri.parse(videoUrl), context);
+                initializeMediaSession(context);
 
                 Configuration configuration = getResources().getConfiguration();
                 if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -133,17 +151,17 @@ public class StepDetailsFragment extends Fragment implements OnPreparedListener 
                     }
 
                     nestedScrollViewStep.setVisibility(View.GONE);
-                    buttonPreviousStep.setVisibility(View.GONE);
-                    buttonNextStep.setVisibility(View.GONE);
+                    buttonPrev.setVisibility(View.GONE);
+                    buttonNext.setVisibility(View.GONE);
                 } else {
                     imageViewStep.setVisibility(View.GONE);
                     RelativeLayout.LayoutParams layoutParams =
                             (RelativeLayout.LayoutParams) textViewStepDescription.getLayoutParams();
-                    layoutParams.addRule(RelativeLayout.BELOW, R.id.videoview_step);
+                    layoutParams.addRule(RelativeLayout.BELOW, R.id.simpleexoplayerview);
                     textViewStepDescription.setLayoutParams(layoutParams);
                 }
             } else {
-                videoViewStep.setVisibility(View.GONE);
+                simpleExoPlayerView.setVisibility(View.GONE);
                 String recipeName = null;
                 if (actionBar != null) {
                     if (actionBar.getTitle() != null) {
@@ -159,6 +177,7 @@ public class StepDetailsFragment extends Fragment implements OnPreparedListener 
                 textViewStepDescription.setLayoutParams(layoutParams);
             }
 
+            getExpoplayerState(savedInstanceState);
         }
 
         return view;
@@ -200,13 +219,114 @@ public class StepDetailsFragment extends Fragment implements OnPreparedListener 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putIntArray(getString(R.string.scroll_position_key),
-                new int[]{nestedScrollViewStep.getScrollX(), nestedScrollViewStep.getScrollY()});
+        saveExpoplayerState(outState);
+        saveScrollState(outState);
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getScrollState(savedInstanceState);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initializePlayer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (exoPlayer == null) {
+            return;
+        }
+        notePlayerState();
+        exoPlayer.setPlayWhenReady(false);
+    }
+
+    private void notePlayerState() {
+        if (exoPlayer != null) {
+            positionMillis = exoPlayer.getCurrentPosition();
+            playWhenReady = exoPlayer.getPlayWhenReady();
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        releasePlayer();
+        if (mediaSession != null) {
+            mediaSession.setActive(false);
+        }
+    }
+
+    private void initializeMediaSession(Context context) {
+        mediaSession = new MediaSessionCompat(context, LOG_TAG);
+        mediaSession.setFlags(
+                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
+                        MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
+        );
+
+        mediaSession.setMediaButtonReceiver(null);
+        stateBuilder = new PlaybackStateCompat.Builder()
+                .setActions(
+                        PlaybackStateCompat.ACTION_PLAY |
+                                PlaybackStateCompat.ACTION_PAUSE |
+                                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
+                                PlaybackStateCompat.ACTION_PLAY_PAUSE
+                );
+
+        mediaSession.setPlaybackState(stateBuilder.build());
+        mediaSession.setCallback(getCallBack());
+        mediaSession.setActive(true);
+
+    }
+
+    private void initializePlayer() {
+        Context context = getContext();
+        if (!TextUtils.isEmpty(videoUrl) && NetworkUtils.isInternetAvailable(context)) {
+            if (exoPlayer == null) {
+                exoPlayer = ExoPlayerFactory.newSimpleInstance(
+                        new DefaultRenderersFactory(context),
+                        new DefaultTrackSelector(), new DefaultLoadControl());
+
+                simpleExoPlayerView.setPlayer(exoPlayer);
+                exoPlayer.addListener(this);
+
+                exoPlayer.setPlayWhenReady(true);
+                MediaSource mediaSource = buildMediaSource(Uri.parse(videoUrl));
+                exoPlayer.prepare(mediaSource, true, false);
+            }
+
+            exoPlayer.seekTo(positionMillis);
+            exoPlayer.setPlayWhenReady(playWhenReady);
+        }
+    }
+
+    private void releasePlayer() {
+        if (exoPlayer != null) {
+            exoPlayer.stop();
+            exoPlayer.release();
+            exoPlayer = null;
+        }
+    }
+
+    private MediaSource buildMediaSource(Uri uri) {
+        return new ExtractorMediaSource(uri,
+                new DefaultHttpDataSourceFactory(getString(R.string.app_name)),
+                new DefaultExtractorsFactory(), null, null);
+    }
+
+    private void saveScrollState(@NonNull Bundle outState) {
+        outState.putIntArray(getString(R.string.scroll_position_key),
+                new int[]{nestedScrollViewStep.getScrollX(), nestedScrollViewStep.getScrollY()});
+    }
+
+    private void getScrollState(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             final int[] position = savedInstanceState.getIntArray(getString(R.string.scroll_position_key));
             if (position != null) {
@@ -219,49 +339,116 @@ public class StepDetailsFragment extends Fragment implements OnPreparedListener 
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Context context = getContext();
-        if (!TextUtils.isEmpty(videoUrl) && NetworkUtils.isInternetAvailable(context)) {
-            initializePlayer(Uri.parse(videoUrl), context);
+    private void saveExpoplayerState(Bundle outState) {
+        if (exoPlayer != null) {
+            outState.putLong(getString(R.string.position_millis_key), exoPlayer.getCurrentPosition());
+            outState.putBoolean(getString(R.string.play_when_ready_key), playWhenReady);
+        }
+    }
+
+    private void getExpoplayerState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            positionMillis = savedInstanceState.getLong(getString(R.string.position_millis_key));
+            playWhenReady = savedInstanceState.getBoolean(getString(R.string.play_when_ready_key));
         }
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (videoViewStep == null) {
-            return;
+    public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+    }
+
+    @Override
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+    }
+
+    @Override
+    public void onLoadingChanged(boolean isLoading) {
+
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        if (playbackState == ExoPlayer.STATE_READY && playWhenReady) {
+            stateBuilder.setState(
+                    PlaybackStateCompat.STATE_PLAYING,
+                    exoPlayer.getCurrentPosition(),
+                    1f
+            );
+
+        } else if (playbackState == ExoPlayer.STATE_READY) {
+            stateBuilder.setState(
+                    PlaybackStateCompat.STATE_PAUSED,
+                    exoPlayer.getCurrentPosition(),
+                    1f
+            );
         }
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-
-    private void initializePlayer(Uri uri, Context context) {
-        videoViewStep.setOnPreparedListener(this);
-        videoViewStep.setVideoURI(uri);
-
-    }
-
-    private MediaSource buildMediaSource(Uri uri) {
-        return new ExtractorMediaSource(uri,
-                new DefaultHttpDataSourceFactory(getString(R.string.app_name)),
-                new DefaultExtractorsFactory(), null, null);
+        if (playbackState == ExoPlayer.STATE_ENDED){
+            //player back ended
+            if(buttonNext.getVisibility() == View.VISIBLE){
+                buttonNext.performClick();
+            }
+        }
+        mediaSession.setPlaybackState(stateBuilder.build());
     }
 
     @Override
-    public void onPrepared() {
-        videoViewStep.start();
+    public void onRepeatModeChanged(int repeatMode) {
+
     }
+
+    @Override
+    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+
+    }
+
+    @Override
+    public void onPositionDiscontinuity(int reason) {
+
+    }
+
+    @Override
+    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+    }
+
+    @Override
+    public void onSeekProcessed() {
+
+    }
+
+//    @Override
+//    public void onPrepared() {
+//        simpleExoPlayerView.start();
+//    }
 
     //Implemented by StepDetails Activity
     public interface StepDetailsOnClickListener {
         void onStepSelected(int position);
+    }
+
+    private MediaSessionCompat.Callback getCallBack() {
+        return new MediaSessionCompat.Callback() {
+            @Override
+            public void onPlay() {
+                exoPlayer.setPlayWhenReady(true);
+            }
+
+            @Override
+            public void onPause() {
+                exoPlayer.setPlayWhenReady(false);
+            }
+
+            @Override
+            public void onSkipToPrevious() {
+                exoPlayer.seekTo(0);
+            }
+        };
     }
 }

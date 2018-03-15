@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import com.k2udacity.baking.R;
 import com.k2udacity.baking.utils.NetworkUtils;
 import com.k2udacity.baking.widget.RecipeWidgetProvider;
@@ -46,26 +47,26 @@ public class WidgetConfigurationActivity extends AppCompatActivity implements
     private LoaderManager.LoaderCallbacks<List<Recipe>> recipeLoaderCallbacks =
             new LoaderManager.LoaderCallbacks<List<Recipe>>() {
 
-        @Override
-        public RecipeLoader onCreateLoader(int i, Bundle bundle) {
-            loadingIndicator.setVisibility(View.VISIBLE);
-            return new RecipeLoader(WidgetConfigurationActivity.this);
-        }
+                @Override
+                public RecipeLoader onCreateLoader(int i, Bundle bundle) {
+                    loadingIndicator.setVisibility(View.VISIBLE);
+                    return new RecipeLoader(WidgetConfigurationActivity.this);
+                }
 
-        @Override
-        public void onLoadFinished(Loader<List<Recipe>> loader, List<Recipe> recipes) {
-            loadingIndicator.setVisibility(View.GONE);
-            recipeAdapter.clear();
-            recipeAdapter.setRecipes(recipes);
-            recipeAdapter.notifyDataSetChanged();
-        }
+                @Override
+                public void onLoadFinished(Loader<List<Recipe>> loader, List<Recipe> recipes) {
+                    loadingIndicator.setVisibility(View.GONE);
+                    recipeAdapter.clear();
+                    recipeAdapter.setRecipes(recipes);
+                    recipeAdapter.notifyDataSetChanged();
+                }
 
-        @Override
-        public void onLoaderReset(Loader<List<Recipe>> loader) {
-            recipeAdapter.clear();
-            recipeAdapter.notifyDataSetChanged();
-        }
-    };
+                @Override
+                public void onLoaderReset(Loader<List<Recipe>> loader) {
+                    recipeAdapter.clear();
+                    recipeAdapter.notifyDataSetChanged();
+                }
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
