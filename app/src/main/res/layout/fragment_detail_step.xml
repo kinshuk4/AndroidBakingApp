@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/container_player"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.devbrackets.android.exomedia.ui.widget.VideoView
+            android:id="@+id/videoview_step"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            app:useDefaultControls="true" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nestedscrollview_step"
+
+            style="@style/NestedScrollViewStep"
+            android:layout_weight="2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageview_step"
+                    style="@style/ImageViewStyle" />
+
+                <TextView
+                    android:id="@+id/textview_step_description"
+                    style="@style/WrapContentStyle"
+                    android:layout_below="@id/imageview_step"
+                    android:layout_margin="8dp" />
+
+            </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="20dp"
+        android:orientation="horizontal"
+        style="@style/ConstraintCenterX"
+        app:layout_constraintTop_toBottomOf="@id/container_player"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        >
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_previous_step"
+            style="@style/CardViewStyle"
+            android:layout_weight="1"
+            >
+
+            <Button
+                android:id="@+id/button_prev"
+                style="@style/MatchParentStyle"
+                android:text="@string/btn_prev" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_next_step"
+            style="@style/CardViewStyle"
+            android:layout_weight="1"
+            >
+
+            <Button
+                android:id="@+id/button_next"
+                style="@style/MatchParentStyle"
+                android:text="@string/btn_next" />
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

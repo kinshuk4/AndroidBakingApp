@@ -2,7 +2,6 @@ package com.k2udacity.baking.adapter;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +48,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
         Step step = steps.get(position);
         String shortDescriptionFormatted = String.format("%-3s", String.valueOf(position + 1)) + step.getShortDescription();
-        holder.textViewStep.setText(shortDescriptionFormatted);
+        holder.textViewStepShortDescription.setText(shortDescriptionFormatted);
     }
 
     @Override
@@ -73,8 +72,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         @BindView(R.id.layout_step)
         ConstraintLayout layoutStep;
 
-        @BindView(R.id.textview_step)
-        TextView textViewStep;
+        @BindView(R.id.textview_step_short_desc)
+        TextView textViewStepShortDescription;
 
         StepViewHolder(View itemView) {
             super(itemView);
