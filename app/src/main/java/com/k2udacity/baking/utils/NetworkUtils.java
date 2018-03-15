@@ -14,7 +14,7 @@ import java.net.URL;
 
 
 public class NetworkUtils {
-    private static String TAG = "NetworkUtils";
+    private static String LOG_TAG = NetworkUtils.class.getSimpleName();
 
     private NetworkUtils() {
     }

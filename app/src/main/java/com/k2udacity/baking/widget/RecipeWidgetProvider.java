@@ -11,9 +11,9 @@ import android.text.TextUtils;
 import android.widget.RemoteViews;
 
 import com.k2udacity.baking.R;
-import com.k2udacity.baking.contract.RecipeContract;
 import com.k2udacity.baking.model.Recipe;
 import com.k2udacity.baking.ui.activity.RecipeDetailsActivity;
+import com.k2udacity.baking.utils.Constants;
 
 
 public class RecipeWidgetProvider extends AppWidgetProvider {
@@ -41,7 +41,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
         Intent intent = new Intent(context, ListWidgetService.class);
         //Add uri to intent to allow for multiple widgets independent of each other.
-        Uri uri = RecipeContract.BASE_CONTENT_URI
+        Uri uri = Constants.BASE_CONTENT_URI
                 .buildUpon()
                 .appendPath("widget")
                 .appendPath("id")

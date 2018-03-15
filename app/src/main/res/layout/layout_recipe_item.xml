@@ -15,9 +15,9 @@
         <TextView
             android:id="@+id/textview_recipe_name"
             style="@style/UniformMarginWrapContentConstraintCenterShadowedTitle"
-            android:shadowColor="@color/text_shadow"
+            android:elevation="@dimen/elevation_card"
 
-            android:elevation="@dimen/elevation_card" />
+            android:shadowColor="@color/text_shadow" />
 
         <android.support.constraint.ConstraintLayout
             style="@style/ConstraintCenterXWrapContent"

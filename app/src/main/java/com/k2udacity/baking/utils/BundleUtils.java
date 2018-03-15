@@ -12,11 +12,11 @@ import com.k2udacity.baking.model.Step;
 import java.util.List;
 
 public class BundleUtils {
-    private BundleUtils(){
+    private BundleUtils() {
 
     }
 
-    public static Pair<List<Ingredient>, List<Step>> extractStepsAndIngredients(Bundle bundle, String key ){
+    public static Pair<List<Ingredient>, List<Step>> extractStepsAndIngredients(Bundle bundle, String key) {
         List<Ingredient> ingredients = null;
         List<Step> steps = null;
         if (bundle != null) {
