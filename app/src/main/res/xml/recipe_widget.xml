@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialKeyguardLayout="@layout/layout_widget_recipe"
+    android:initialLayout="@layout/layout_widget_recipe"
+    android:minHeight="@dimen/height_min_widget"
+    android:minWidth="@dimen/width_min_widget"
+    android:previewImage="@drawable/cupcake"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="1800000"
+    android:widgetCategory="home_screen"
+    android:configure="com.k2udacity.baking.ui.activity.WidgetConfigurationActivity"/>

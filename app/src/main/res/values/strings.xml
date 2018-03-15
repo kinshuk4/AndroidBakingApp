@@ -7,15 +7,16 @@
     <string name="recipe_name_key" translatable="false">recipe_name_key</string>
     <string name="scroll_position_key" translatable="false">scroll_position</string>
     <string name="selected_row_index_key" translatable="false">selected_row_index</string>
-
+    <string name="recipe_json_key" translatable="false">recipe_json_key</string>
     <!--Actual UI Names-->
     <string name="refresh">refresh</string>
     <string name="desc_imageview_content">Recipe Snap</string>
+    <string name="choose_a_dish">Choose the Dish</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="steps">Steps</string>
 
     <!--error messages-->
     <string name="no_internet_message">No connection available. Please provide connection and hit refresh.</string>
-    <string name="ingredients">Ingredients</string>
-    <string name="steps">Steps</string>
     <string name="msg_click_the_steps">Please click the steps to follow them.</string>
     <string name="btn_prev">Prev</string>
     <string name="btn_next">Next</string>
@@ -23,4 +24,7 @@
     <string name="error_unable_to_fetch_step">Unable to fetch the valid step</string>
     <string name="error_unable_to_fetch_any_steps">Unable to fetch the steps</string>
     <string name="unable_to_fetch_current_step">Unable to fetch current step</string>
+    <string name="recipe_preferences">recipe_preferences</string>
+    <string name="recipe_cannot_be_displayed">No Recipe Available</string>
+
 </resources>

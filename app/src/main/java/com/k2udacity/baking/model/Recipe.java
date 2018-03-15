@@ -3,6 +3,8 @@ package com.k2udacity.baking.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 
@@ -110,5 +112,15 @@ public class Recipe implements Parcelable {
         parcel.writeTypedList(steps);
         parcel.writeString(servings);
         parcel.writeString(image);
+    }
+
+    public static Recipe fromJson(String serializedRecipe) {
+        Gson gson = new Gson();
+        return gson.fromJson(serializedRecipe, Recipe.class);
+    }
+
+    public String toJsonString() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

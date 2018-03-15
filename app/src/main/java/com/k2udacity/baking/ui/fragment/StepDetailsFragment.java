@@ -187,7 +187,7 @@ public class StepDetailsFragment extends Fragment implements OnPreparedListener 
         if (context instanceof StepDetailsOnClickListener) {
             listener = (StepDetailsOnClickListener) context;
         } else {
-            throw new RuntimeException("Unable to get the listener on StepDetailsFragment");
+            throw new RuntimeException("Unable to get the listener on StepDetailsFragment, more details: " + context.getClass().getSimpleName());
         }
     }
 
