@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements
-        RecipeDetailsFragment.RecipeDetailsOnClickListener {
+        RecipeDetailsFragment.RecipeDetailsOnClickListener,
+        StepDetailsFragment.StepDetailsOnClickListener {
 
     private static String LOG_TAG = RecipeDetailsActivity.class.getSimpleName();
     private Recipe recipe;
