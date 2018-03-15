@@ -26,7 +26,7 @@
                 android:id="@+id/textview_serves"
                 style="@style/ConstraintCenterWrapContent"
                 android:drawableLeft="@drawable/teapot_24"
-                android:drawablePadding="@dimen/padding_serves_drawable"
+                android:drawablePadding="@dimen/padding_default"
                 android:elevation="@dimen/elevation_card"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorPrimary" />

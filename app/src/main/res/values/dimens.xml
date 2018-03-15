@@ -3,7 +3,7 @@
     <dimen name="margin_text">8dp</dimen>
     <dimen name="elevation_card">2dp</dimen>
     <dimen name="height_iv_recipe_item">200dp</dimen>
-    <dimen name="padding_serves_drawable">200dp</dimen>
+    <dimen name="padding_default">10dp</dimen>
     <dimen name="width_rectangle">48dp</dimen>
     <dimen name="height_rectangle">24dp</dimen>
 </resources>
