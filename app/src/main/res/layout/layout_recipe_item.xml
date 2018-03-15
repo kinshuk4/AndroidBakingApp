@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recipe_list_item"
+    style="@style/UniformMargin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/margin_text"
+    app:cardElevation="@dimen/elevation_card">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textview_recipe_name"
+            style="@style/UniformMarginWrapContentConstraintCenterTitle"
+            android:elevation="@dimen/elevation_card" />
+
+        <android.support.constraint.ConstraintLayout
+            style="@style/ConstraintCenterXWrapContent"
+            android:elevation="@dimen/elevation_card"
+            app:layout_constraintTop_toBottomOf="@+id/textview_recipe_name">
+
+            <TextView
+                android:id="@+id/textview_serves"
+                style="@style/ConstraintCenterWrapContent"
+                android:drawableLeft="@drawable/teapot_24"
+                android:drawablePadding="@dimen/padding_serves_drawable"
+                android:elevation="@dimen/elevation_card"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimary" />
+
+            <ImageView
+                android:id="@+id/imageview_serving_wrapper"
+                style="@style/ConstraintCenterY"
+                android:layout_width="@dimen/width_rectangle"
+                android:layout_height="@dimen/height_rectangle"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_rectangle"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+        <ImageView
+            android:id="@+id/imageview_recipe"
+            style="@style/ImageViewConstrainedCenterXStyle"
+            android:contentDescription="@string/desc_imageview_content"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

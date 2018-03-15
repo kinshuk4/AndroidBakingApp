@@ -46,7 +46,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         }
         Recipe recipe = recipes.get(position);
         holder.textViewRecipeName.setText(recipe.getName());
-        holder.textViewServes.setText(recipe.getServings());
+        holder.textViewServes.setText(recipe.getServings() + " Servings");
 
         ImageUtils.setImage(context, recipe.getImage(), holder.imageViewRecipeItem,  R.drawable.default_recipe);
     }
