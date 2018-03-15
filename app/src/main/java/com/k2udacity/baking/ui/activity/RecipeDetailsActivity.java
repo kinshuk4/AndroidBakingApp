@@ -3,6 +3,7 @@ package com.k2udacity.baking.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -55,9 +56,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
             if (getResources().getBoolean(R.bool.isTablet)) {
                 List<Step> steps = recipe.getSteps();
                 if (steps != null) {
-                    bundle = new Bundle();
-                    bundle.putParcelableArrayList(getString(R.string.steps_intent_key), (ArrayList<Step>) steps);
-                    bundle.putInt(getString(R.string.step_position_key), position);
+                    bundle = getStepsBundle();
                     FragmentUtils.addFragment(this, R.id.container_steps, StepDetailsFragment.newInstance(bundle));
                 }
             }
@@ -71,9 +70,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
             if (steps != null) {
                 this.position = position;
 
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList(getString(R.string.steps_intent_key), (ArrayList<Step>) steps);
-                bundle.putInt(getString(R.string.step_position_key), position);
+                Bundle bundle = getStepsBundle();
                 FragmentUtils.replaceFragment(this, R.id.container_steps, StepDetailsFragment.newInstance(bundle));
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -86,18 +83,30 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
                 }
             }
         } else {
-            List<Step> steps = recipe.getSteps();
-
-            Intent intent = new Intent(this, StepDetailsActivity.class);
-            intent.putParcelableArrayListExtra(getString(R.string.steps_intent_key), (ArrayList<Step>) steps);
-            intent.putExtra(getString(R.string.step_position_key), position);
-
-            ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) {
-                intent.putExtra(getString(R.string.recipe_name_key), actionBar.getTitle());
-            }
-            startActivity(intent);
+            startStepDetailsActivity();
         }
+    }
+
+    @NonNull
+    private Bundle getStepsBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(getString(R.string.steps_intent_key), (ArrayList<Step>) recipe.getSteps());
+        bundle.putInt(getString(R.string.step_position_key), position);
+        return bundle;
+    }
+
+    private void startStepDetailsActivity() {
+        List<Step> steps = recipe.getSteps();
+
+        Intent intent = new Intent(this, StepDetailsActivity.class);
+        intent.putParcelableArrayListExtra(getString(R.string.steps_intent_key), (ArrayList<Step>) steps);
+        intent.putExtra(getString(R.string.step_position_key), position);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            intent.putExtra(getString(R.string.recipe_name_key), actionBar.getTitle());
+        }
+        startActivity(intent);
     }
 
 }
