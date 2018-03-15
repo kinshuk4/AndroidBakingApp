@@ -125,6 +125,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
             }
 
             textViewStepDescription.setText(currentStep.getDescription());
+
             setUpPrevAndNextButton(buttonPrev, steps.size(), position, -1);
             setUpPrevAndNextButton(buttonNext, steps.size(), position, 1);
 
@@ -153,6 +154,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
                     nestedScrollViewStep.setVisibility(View.GONE);
                     buttonPrev.setVisibility(View.GONE);
                     buttonNext.setVisibility(View.GONE);
+
                 } else {
                     imageViewStep.setVisibility(View.GONE);
                     RelativeLayout.LayoutParams layoutParams =
@@ -384,12 +386,13 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
                     1f
             );
         }
-        if (playbackState == ExoPlayer.STATE_ENDED){
-            //player back ended
-            if(buttonNext.getVisibility() == View.VISIBLE){
-                buttonNext.performClick();
-            }
-        }
+        //TODO enable when there is a way to show text -  moving to next step in 5 seconds
+//        if (playbackState == ExoPlayer.STATE_ENDED){
+//            //player back ended
+//            if(buttonNext.getVisibility() == View.VISIBLE){
+//                buttonNext.performClick();
+//            }
+//        }
         mediaSession.setPlaybackState(stateBuilder.build());
     }
 

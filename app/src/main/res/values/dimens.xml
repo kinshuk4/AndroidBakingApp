@@ -6,6 +6,6 @@
     <dimen name="padding_default">10dp</dimen>
     <dimen name="width_rectangle">48dp</dimen>
     <dimen name="height_rectangle">24dp</dimen>
-    <dimen name="height_min_widget">40dp</dimen>
-    <dimen name="width_min_widget">40dp</dimen>
+    <dimen name="height_min_widget">110dp</dimen>
+    <dimen name="width_min_widget">110dp</dimen>
 </resources>

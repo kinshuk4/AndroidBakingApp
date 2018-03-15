@@ -4,52 +4,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/container_player"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedscrollview_step"
+        style="@style/NestedScrollViewStep">
 
-        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-            android:id="@+id/simpleexoplayerview"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            />
+            android:layout_height="wrap_content">
 
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/nestedscrollview_step"
-
-            style="@style/NestedScrollViewStep"
-            android:layout_weight="2">
-
-            <RelativeLayout
+            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                android:id="@+id/simpleexoplayerview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:resize_mode="fixed_width" />
 
-                <ImageView
-                    android:id="@+id/imageview_step"
-                    style="@style/ImageViewStyle" />
 
-                <TextView
-                    android:id="@+id/textview_step_description"
-                    style="@style/WrapContentStyle"
-                    android:layout_below="@id/imageview_step"
-                    android:layout_margin="8dp" />
+            <ImageView
+                android:id="@+id/imageview_step"
+                style="@style/ImageViewStyle" />
 
-            </RelativeLayout>
-        </android.support.v4.widget.NestedScrollView>
+            <TextView
+                android:id="@+id/textview_step_description"
+                style="@style/WrapContentStyle"
+                android:layout_margin="8dp" />
 
-    </LinearLayout>
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_step"
+        style="@style/WrapContentVertical"
+        app:layout_constraintGuide_percent="0.5" />
 
     <LinearLayout
+        style="@style/ConstraintCenterX"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="20dp"
         android:orientation="horizontal"
-        style="@style/ConstraintCenterX"
-        app:layout_constraintTop_toBottomOf="@id/container_player"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline_step"
 
         >
 
@@ -78,7 +72,6 @@
                 android:text="@string/btn_next" />
 
         </android.support.v7.widget.CardView>
-
     </LinearLayout>
 
 
