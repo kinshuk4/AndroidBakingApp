@@ -63,7 +63,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         @BindView(R.id.textview_ingredient)
         TextView textViewIngredientName;
 
-        @BindView(R.id.textview_quantity)
+        @BindView(R.id.textview_quantity_and_measure)
         TextView textViewIngredientQuantityAndMeasurement;
 
         IngredientViewHolder(View itemView) {
