@@ -21,7 +21,8 @@
 
             <ImageView
                 android:id="@+id/imageview_step"
-                style="@style/ImageViewStyle" />
+                style="@style/ImageViewStyle"
+                />
 
             <TextView
                 android:id="@+id/textview_step_description"

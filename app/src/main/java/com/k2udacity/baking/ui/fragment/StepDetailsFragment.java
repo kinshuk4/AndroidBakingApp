@@ -151,7 +151,9 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
                                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
                     }
 
-                    nestedScrollViewStep.setVisibility(View.GONE);
+//                    nestedScrollViewStep.setVisibility(View.GONE);
+                    imageViewStep.setVisibility(View.GONE);
+                    textViewStepDescription.setVisibility(View.GONE);
                     buttonPrev.setVisibility(View.GONE);
                     buttonNext.setVisibility(View.GONE);
 
