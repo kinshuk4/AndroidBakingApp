@@ -78,7 +78,7 @@ public class StepDetailsActivityTest {
             clickOnStepList(0);
 
 
-            onView(withId(R.id.button_next)).perform(scrollTo()).perform(click());
+            onView(withId(R.id.button_next)).perform(click());
             Thread.sleep(1000);
             onView(allOf(isDescendantOfA(withResourceName(ACTION_BAR)), withText(NUTELLA_PIE)))
                     .check(matches(isDisplayed()));
