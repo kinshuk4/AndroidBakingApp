@@ -66,11 +66,10 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
 
     @Override
     public void onStepSelected(int position) {
+        this.position = position;
         if (getResources().getBoolean(R.bool.isTablet)) {
             List<Step> steps = recipe.getSteps();
             if (steps != null) {
-                this.position = position;
-
                 Bundle bundle = getStepsBundle();
                 FragmentUtils.replaceFragment(this, R.id.container_steps, StepDetailsFragment.newInstance(bundle));
 
