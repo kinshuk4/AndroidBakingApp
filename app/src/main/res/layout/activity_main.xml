@@ -14,17 +14,14 @@
 
     <TextView
         android:id="@+id/textview_no_internet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/WrapContentConstraintCenterXTitle"
         android:layout_centerInParent="true"
         android:layout_margin="40dp"
         android:visibility="gone" />
 
     <Button
         android:id="@+id/button_refresh"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
+        style="@style/ConstraintCenterWrapContent"
         android:layout_below="@+id/textview_no_internet"
         android:layout_margin="40dp"
         android:text="@string/refresh"

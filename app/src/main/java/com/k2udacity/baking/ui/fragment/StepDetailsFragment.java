@@ -2,10 +2,12 @@ package com.k2udacity.baking.ui.fragment;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 
 import android.support.v4.media.session.MediaSessionCompat;
@@ -109,18 +111,24 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
             steps = bundle.getParcelableArrayList(getString(R.string.steps_intent_key));
             position = bundle.getInt(getString(R.string.step_position_key));
         } else {
-            Toast.makeText(context, R.string.error_unable_to_fetch_any_steps, Toast.LENGTH_SHORT).show();
+            Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.error_unable_to_fetch_any_steps, Snackbar.LENGTH_SHORT)
+                    .setActionTextColor(Color.RED)
+                    .show();
         }
 
         if (steps != null) {
             if (position < 0 || position > steps.size()) {
-                Toast.makeText(context, R.string.error_unable_to_fetch_step, Toast.LENGTH_SHORT).show();
+                Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.error_unable_to_fetch_step, Snackbar.LENGTH_SHORT)
+                        .setActionTextColor(Color.RED)
+                        .show();
                 return view;
             }
             Step currentStep = steps.get(position);
 
             if (currentStep == null) {
-                Toast.makeText(context, R.string.unable_to_fetch_current_step, Toast.LENGTH_SHORT).show();
+                Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.unable_to_fetch_current_step, Snackbar.LENGTH_SHORT)
+                        .setActionTextColor(Color.RED)
+                        .show();
                 return view;
             }
 
