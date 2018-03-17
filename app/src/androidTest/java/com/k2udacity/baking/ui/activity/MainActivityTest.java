@@ -1,6 +1,7 @@
 package com.k2udacity.baking.ui.activity;
 
 import android.content.Context;
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
@@ -14,6 +15,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -26,6 +28,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withResourceNam
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.k2udacity.baking.utils.TestConstant.ACTION_BAR;
 import static com.k2udacity.baking.utils.TestConstant.BROWNIES;
+import static com.k2udacity.baking.utils.TestConstant.NUTELLA_PIE;
 import static org.hamcrest.Matchers.allOf;
 
 
@@ -48,7 +51,10 @@ public class MainActivityTest {
     @Test
     public void checkRecipesRecyclerViewIsDisplayed(){
         onView(withId(R.id.recyclerview_recipes)).check(matches(isDisplayed()));
-        onView(withId(R.id.textview_recipe_name)).check(matches(isDisplayed()));
+        ViewInteraction textView = onView(allOf(withId(R.id.textview_recipe_name),
+                withText(NUTELLA_PIE)));
+        textView.check(matches(withText(NUTELLA_PIE)));
+//        onData(withId(R.id.textview_recipe_name)).inAdapterView(withId(R.id.recyclerview_recipes)).check(matches(isDisplayed()));
     }
 
 
