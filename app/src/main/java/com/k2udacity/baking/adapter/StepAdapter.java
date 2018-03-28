@@ -2,6 +2,7 @@ package com.k2udacity.baking.adapter;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,17 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     public void onBindViewHolder(final StepViewHolder holder, int position) {
         if (steps == null) {
             return;
+        }
+
+        if (context.getResources().getBoolean(R.bool.isTablet)) {
+            //Set text to white color for current position and reverse it
+            if (selectedRowIndex == position) {
+                holder.layoutStep.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                holder.textViewStepShortDescription.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
+            } else {
+                holder.layoutStep.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite));
+                holder.textViewStepShortDescription.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            }
         }
 
         Step step = steps.get(position);
