@@ -17,7 +17,7 @@
             style="@style/UniformMarginWrapContentConstraintCenterShadowedTitle"
             android:elevation="@dimen/elevation_card"
 
-            android:shadowColor="@color/text_shadow" />
+            android:shadowColor="@color/textShadowColor" />
 
         <android.support.constraint.ConstraintLayout
             style="@style/ConstraintCenterXWrapContent"
